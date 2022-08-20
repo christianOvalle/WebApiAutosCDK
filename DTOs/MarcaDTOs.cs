@@ -8,7 +8,8 @@ namespace WebApiAutosCDK.DTOs
 
         public string marca { get; set; }
 
-       
+        public List<ComentarioDTOs> comentarios { get; set; }
 
+        public List<ModeloDTOs> Modelos { get; set; }
     }
 }

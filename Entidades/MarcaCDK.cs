@@ -11,7 +11,7 @@ namespace WebApiAutosCDK.Entidades
         [PrimeraLetraMayusculaAttribute]
         public string  marca { get; set; }    
 
-        public List<ModeloCDK> ModelosCDK { get; set; } 
+        public List<ModeloCDK> Modelos { get; set; } 
 
         public List<Comentario> comentarios { get; set; }
     }

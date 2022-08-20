@@ -11,11 +11,12 @@ namespace WebApiAutosCDK.Utilidades
             CreateMap<MarcaCreacionDTOs, MarcaCDK>();
             CreateMap<ModeloCreacionDTOs, ModeloCDK>();
             CreateMap<MarcaCDK, MarcaDTOs>();
-            CreateMap<MarcaEditarDTOs, MarcaCDK>();
             CreateMap<ModeloCDK, ModeloDTOs>();
-            CreateMap<ModeloEditarDTOs, ModeloCDK>();
             CreateMap<ComentariosCreacionDTOs, Comentario>();
             CreateMap<Comentario, ComentarioDTOs>();
+            CreateMap<VersionCDK, VersionDTOs>();
+            CreateMap<VersionCreacionDTOs, VersionCDK>();
+            CreateMap<ExtraCDK, ExtraDTOs>();
         }
     }
 }

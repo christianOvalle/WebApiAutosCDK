@@ -42,7 +42,13 @@ namespace WebApiAutosCDK.Controllers
         [HttpGet("{nombre}")]
         public async Task<ActionResult<List<ModeloDTOs>>> Get(string nombre)
         {
-            var existe = await context.ModelosCDK.Where(x => x.modelo.Contains(nombre)).ToListAsync();      
+            var existe = await context.ModelosCDK.Where(x => x.modelo.Contains(nombre)).ToListAsync();
+
+            if (existe.Count == 0)
+            {
+                return BadRequest($"No se a encontrado registros que contengan ({nombre})");
+            }
+
             return mapper.Map<List<ModeloDTOs>>(existe);
         }
 
@@ -72,30 +78,29 @@ namespace WebApiAutosCDK.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(ModeloEditarDTOs modeloEditarDTOs, int id)
+        public async Task<ActionResult> Put(ModeloCDK modeloCDK, int id)
         {
-            if(modeloEditarDTOs.Id != id)
+            if(modeloCDK.Id != id)
             {
                 return BadRequest("El id del modelo no coincide con el de la URL");
             }
 
-            var valido = await context.ModelosCDK.AnyAsync(x=>x.Id == modeloEditarDTOs.Id);
+            var valido = await context.ModelosCDK.AnyAsync(x=>x.Id == modeloCDK.Id);
 
             if (!valido)
             {
                 return BadRequest("El modelo que desea editar no existe");
             }
 
-            var existeMarca = await context.MarcasCDK.AnyAsync(x => x.Id == modeloEditarDTOs.MarcaCDKId);
+            var existeMarca = await context.MarcasCDK.AnyAsync(x => x.Id == modeloCDK.MarcaCDKId);
 
             if (!existeMarca)
             {
-                return BadRequest($"No existe una marca con id {modeloEditarDTOs.MarcaCDKId}");
+                return BadRequest($"No existe una marca con id {modeloCDK.MarcaCDKId}");
             }
+       
 
-            var modelo = mapper.Map<ModeloCDK>(modeloEditarDTOs);
-
-            context.Update(modelo);
+            context.Update(modeloCDK);
             await context.SaveChangesAsync();
             return Ok();
         }

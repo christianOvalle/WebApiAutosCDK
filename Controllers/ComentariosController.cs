@@ -8,7 +8,7 @@ namespace WebApiAutosCDK.Controllers
 {
     [ApiController]
     [Route("api/marca/{MarcaId:int}/comentarios")]
-    public class ComentariosController : ControllerBase
+    public class ComentariosController : ControllerBase 
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
@@ -22,9 +22,9 @@ namespace WebApiAutosCDK.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ComentarioDTOs>>> Get(int MarcaId)
         {
-            var existe = await context.MarcasCDK.AnyAsync(x => x.Id == MarcaId);
+            var existeMarca = await context.MarcasCDK.AnyAsync(x => x.Id == MarcaId);
 
-            if (!existe)
+            if (!existeMarca)
             {
                 return NotFound();
             }
@@ -35,18 +35,18 @@ namespace WebApiAutosCDK.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(int marcaId, ComentariosCreacionDTOs comentariosCreacionDTOs)
+        public async Task<ActionResult> Post(int MarcaId, ComentariosCreacionDTOs comentariosCreacionDTOs)
         {
-           var existe = await context.MarcasCDK.AnyAsync(x => x.Id == marcaId);
+            var existeMarca = await context.MarcasCDK.AnyAsync(x => x.Id == MarcaId);
 
-            if(!existe)
+            if(!existeMarca)
             {
                 return NotFound();
             }
 
             var comentario = mapper.Map<Comentario>(comentariosCreacionDTOs);
 
-            comentario.MarcaCDKId = marcaId;
+            comentario.MarcaCDKId = MarcaId;
             context.Add(comentario);
             await context.SaveChangesAsync();
             return Ok();

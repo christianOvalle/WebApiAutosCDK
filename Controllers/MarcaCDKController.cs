@@ -22,7 +22,7 @@ namespace WebApiAutosCDK.Controllers
         [HttpGet]
         public async Task<ActionResult<List<MarcaDTOs>>> Get()
         {
-            var marcasLista = await context.MarcasCDK.Include(x => x.ModelosCDK).ToListAsync();
+            var marcasLista = await context.MarcasCDK.Include(x => x.Modelos).ToListAsync();
             return mapper.Map<List<MarcaDTOs>>(marcasLista);
 
         }
@@ -30,7 +30,7 @@ namespace WebApiAutosCDK.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<MarcaDTOs>> Get(int id)
         {
-            var marca = await context.MarcasCDK.FirstOrDefaultAsync(x => x.Id == id);
+            var marca = await context.MarcasCDK.Include(x=>x.comentarios).Include(x=>x.Modelos).FirstOrDefaultAsync(x => x.Id == id);
 
             if (marca == null)
             {
@@ -45,6 +45,11 @@ namespace WebApiAutosCDK.Controllers
         public async Task<ActionResult<List<MarcaDTOs>>> Get(string nombre)
         {
             var existe = await context.MarcasCDK.Where(x => x.marca.Contains(nombre)).ToListAsync();
+
+            if (existe.Count == 0)
+            {
+                return BadRequest($"No se a encontrado registros que contengan ({nombre})");
+            }
 
             return mapper.Map<List<MarcaDTOs>>(existe);
 
@@ -68,9 +73,9 @@ namespace WebApiAutosCDK.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(MarcaEditarDTOs marcaEditarDTOs, int id)
+        public async Task<ActionResult> Put(MarcaCDK marcaCDK, int id)
         {
-            if (marcaEditarDTOs.Id != id)
+            if (marcaCDK.Id != id)
             {
                 return BadRequest("El id de la marca NO coincide con el de la URL");
             }
@@ -82,9 +87,7 @@ namespace WebApiAutosCDK.Controllers
                 return NotFound();
             }
 
-            var marca = mapper.Map<MarcaCDK>(marcaEditarDTOs);
-
-            context.Update(marca);
+            context.Update(marcaCDK);
             await context.SaveChangesAsync();
             return Ok();
         }
