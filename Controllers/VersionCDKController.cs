@@ -55,19 +55,21 @@ namespace WebApiAutosCDK.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(VersionCreacionDTOs versionCDK)
         {
-            var modeloExiste = await context.ModelosCDK.AnyAsync(x => x.Id == versionCDK.ModeloCDKId);
+            var existeModelo = await context.ModelosCDK.AnyAsync(x => x.Id == versionCDK.ModeloCDKId);
 
-            if (!modeloExiste)
+            if (!existeModelo)
             {
-                return BadRequest($"No existe el modelo de id {versionCDK.ModeloCDKId}, el modelo debe existir en el registro");
+                return BadRequest($"No existe el modelo de id {versionCDK.ModeloCDKId}");
             }
 
-            var existeNombre = await context.VersionCDK.AnyAsync(x => x.versionNombre == versionCDK.versionNombre);
+             
+            var extrasIds = await context.ExtraCDK.Where(x => versionCDK.ExtrasIds.Contains(x.Id)).Select(x => x.Id).ToListAsync();
 
-            if (existeNombre)
+            if(versionCDK.ExtrasIds.Count != extrasIds.Count)
             {
-                return BadRequest("Ya existe la version que intenta crear ");
+                return BadRequest("No existe uno de los Extras enviados");
             }
+
 
             var version = mapper.Map<VersionCDK>(versionCDK);
 

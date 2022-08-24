@@ -21,6 +21,8 @@ namespace WebApiAutosCDK.DTOs
 
         public int ModeloCDKId { get; set; }
 
-       
+        public List<int> ExtrasIds { get; set; }
+
+
     }
 }

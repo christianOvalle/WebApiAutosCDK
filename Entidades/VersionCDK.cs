@@ -19,6 +19,10 @@ namespace WebApiAutosCDK.Entidades
         public string combustible { get; set; } 
 
         public int ModeloCDKId { get; set; }
+
+        public List<VersionCDK_ExtraCDK> versionCDK_ExtraCDKs { get; set; }
+
+
        
         
     }
