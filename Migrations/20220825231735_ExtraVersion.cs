@@ -4,7 +4,7 @@
 
 namespace WebApiAutosCDK.Migrations
 {
-    public partial class Ext_Ver : Migration
+    public partial class ExtraVersion : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,7 +41,8 @@ namespace WebApiAutosCDK.Migrations
                         name: "FK_VersionCDK_ModelosCDK_ModeloCDKId",
                         column: x => x.ModeloCDKId,
                         principalTable: "ModelosCDK",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -49,17 +50,17 @@ namespace WebApiAutosCDK.Migrations
                 columns: table => new
                 {
                     VersionCDKId = table.Column<int>(type: "int", nullable: false),
-                    ExtrasCDKId = table.Column<int>(type: "int", nullable: false),
-                    extraCDKId = table.Column<int>(type: "int", nullable: true)
+                    ExtraCDKId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_versionCDK_ExtraCDK", x => new { x.VersionCDKId, x.ExtrasCDKId });
+                    table.PrimaryKey("PK_versionCDK_ExtraCDK", x => new { x.VersionCDKId, x.ExtraCDKId });
                     table.ForeignKey(
-                        name: "FK_versionCDK_ExtraCDK_ExtraCDK_extraCDKId",
-                        column: x => x.extraCDKId,
+                        name: "FK_versionCDK_ExtraCDK_ExtraCDK_ExtraCDKId",
+                        column: x => x.ExtraCDKId,
                         principalTable: "ExtraCDK",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_versionCDK_ExtraCDK_VersionCDK_VersionCDKId",
                         column: x => x.VersionCDKId,
@@ -69,9 +70,9 @@ namespace WebApiAutosCDK.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_versionCDK_ExtraCDK_extraCDKId",
+                name: "IX_versionCDK_ExtraCDK_ExtraCDKId",
                 table: "versionCDK_ExtraCDK",
-                column: "extraCDKId");
+                column: "ExtraCDKId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

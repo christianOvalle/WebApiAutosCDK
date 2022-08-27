@@ -29,7 +29,7 @@ namespace WebApiAutosCDK.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<VersionDTOs>> Get(int id)
         {
-            var existe = await context.VersionCDK.FirstOrDefaultAsync(x => x.Id == id);
+            var existe = await context.VersionCDK.Include(x=>x.versionCDK_ExtraCDKs).ThenInclude(x=>x.Extra).FirstOrDefaultAsync(x => x.Id == id);
 
             if (existe == null)
             {

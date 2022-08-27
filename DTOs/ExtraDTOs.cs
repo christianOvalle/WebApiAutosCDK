@@ -7,5 +7,7 @@
         public string nombre { get; set; }
 
         public string descripcion { get; set; }
+
+        public List<VersionDTOs> VersionDTOs { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace WebApiAutosCDK
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<VersionCDK_ExtraCDK>().HasKey(x => new { x.VersionCDKId, x.ExtrasCDKId });
+            modelBuilder.Entity<VersionCDK_ExtraCDK>().HasKey(x => new { x.VersionCDKId, x.ExtraCDKId});
         }
 
         public DbSet<MarcaCDK> MarcasCDK { get ; set; }

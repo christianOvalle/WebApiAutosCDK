@@ -5,10 +5,10 @@
        
         public int VersionCDKId { get; set; }
 
-        public int ExtrasCDKId  { get; set; }
+        public int ExtraCDKId  { get; set; }
 
-        public ExtraCDK extraCDK { get; set; }
+        public ExtraCDK Extra { get; set; }
 
-        public VersionCDK versionCDK { get; set; }
+        public VersionCDK version { get; set; }
     }
 }
