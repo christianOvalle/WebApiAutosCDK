@@ -8,6 +8,6 @@
 
         public string descripcion { get; set; }
 
-        public List<VersionDTOs> VersionDTOs { get; set; }
+       
     }
 }

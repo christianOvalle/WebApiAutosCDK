@@ -26,8 +26,8 @@ namespace WebApiAutosCDK.Controllers
             return mapper.Map<List<ExtraDTOs>>(extras);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<ExtraDTOs>> Get(int id)
+        [HttpGet("{id:int}", Name ="Obtener Extra")]
+        public async Task<ActionResult<ExtraDTOsConVersiones>> Get(int id)
         {
             var existe = await context.ExtraCDK.Include(x=>x.versionCDK_ExtraCDK).ThenInclude(x=>x.version).FirstOrDefaultAsync(x => x.Id == id);
 
@@ -36,9 +36,9 @@ namespace WebApiAutosCDK.Controllers
                 return NotFound();
             }
 
-            var extra = mapper.Map<ExtraDTOs>(existe);
+            return mapper.Map<ExtraDTOsConVersiones>(existe);
 
-            return extra;
+           
         }
 
         [HttpGet("{nombre}")]
@@ -70,17 +70,16 @@ namespace WebApiAutosCDK.Controllers
 
             context.Add(extra);
             await context.SaveChangesAsync();
-            return Ok();
+
+            var extradto = mapper.Map<ExtraDTOs>(extra);
+
+            return CreatedAtRoute("Obtener Extra", new { id = extradto.Id }, extradto);
         }
         
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(ExtraCDK extraCDK, int id)
+        public async Task<ActionResult> Put(ExtraCreacionDTOs extraCreacionDTO, int id)
         {
-            if(extraCDK.Id != id)
-            {
-                return BadRequest("El id del extra no coincide con el de la Url");
-            }
-
+         
             var existe = await context.ExtraCDK.AnyAsync(x => x.Id == id);
 
             if (!existe)
@@ -88,9 +87,12 @@ namespace WebApiAutosCDK.Controllers
                 return NotFound();
             }
 
-            context.Update(extraCDK);
+            var extraEditado = mapper.Map<ExtraCDK>(extraCreacionDTO);
+            extraEditado.Id = id;
+
+            context.Update(extraEditado);
             await context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
         
         [HttpDelete("{id:int}")]

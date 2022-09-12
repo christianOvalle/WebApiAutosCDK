@@ -11,7 +11,7 @@ namespace WebApiAutosCDK.DTOs
 
         public int MarcaCDKId { get; set; }
 
-        //public MarcaCDK MarcaCDK { get; set; }
+        public DateTime FechaCreacion { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

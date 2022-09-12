@@ -26,8 +26,8 @@ namespace WebApiAutosCDK.Controllers
             return mapper.Map <List<VersionDTOs>>(versiones);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<VersionDTOs>> Get(int id)
+        [HttpGet("{id:int}", Name = "Obtener version")]
+        public async Task<ActionResult<VersionDTOsConExtras>> Get(int id)
         {
             var existe = await context.VersionCDK.Include(x=>x.versionCDK_ExtraCDKs).ThenInclude(x=>x.Extra).FirstOrDefaultAsync(x => x.Id == id);
 
@@ -36,7 +36,7 @@ namespace WebApiAutosCDK.Controllers
                 return NotFound();
             }
 
-            return mapper.Map<VersionDTOs>(existe);
+            return mapper.Map<VersionDTOsConExtras>(existe);
         }
 
         [HttpGet("{nombre}")]
@@ -75,27 +75,26 @@ namespace WebApiAutosCDK.Controllers
 
             context.Add(version);
             await context.SaveChangesAsync();
-            return Ok();
+
+            var versionDTO = mapper.Map<VersionDTOs>(version);
+            return CreatedAtRoute("Obtener version", new { id = version.Id}, versionDTO);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(VersionCDK versionCDK, int id)
+        public async Task<ActionResult> Put(VersionCreacionDTOs versionCreacionDTOs, int id)
         {
-            if(versionCDK.Id != id)
+
+            var versionDB = await context.VersionCDK.Include(x => x.versionCDK_ExtraCDKs).FirstOrDefaultAsync(x => x.Id == id);
+
+            if(versionDB == null)
             {
-                return BadRequest("El id de la version a editar no coincide con el enviado en la url");
+                return NotFound();
             }
 
-            var existeVersion = await context.VersionCDK.AnyAsync(x => x.Id == id);
+            versionDB = mapper.Map(versionCreacionDTOs, versionDB);
 
-            if (!existeVersion)
-            {
-                return BadRequest($"La version de id {id} no existes");
-            }
-
-            context.Update(versionCDK);
             await context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
 
         [HttpDelete("{id:int}")]

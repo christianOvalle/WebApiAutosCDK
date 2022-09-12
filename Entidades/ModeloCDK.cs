@@ -14,6 +14,8 @@ namespace WebApiAutosCDK.Entidades
 
         public MarcaCDK MarcaCDK { get; set; }
 
+        public DateTime? FechaCreacion  { get; set; } 
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (!string.IsNullOrEmpty(modelo))

@@ -1,4 +1,6 @@
-﻿namespace WebApiAutosCDK.DTOs
+﻿using WebApiAutosCDK.Entidades;
+
+namespace WebApiAutosCDK.DTOs
 {
     public class ModeloDTOs
     {
@@ -6,6 +8,9 @@
 
         public string modelo { get; set; }
 
+        public DateTime FechaCreacion { get; set; }
+
+        public MarcaDTOs MarcaDTOs { get; set; }
 
     }
 }

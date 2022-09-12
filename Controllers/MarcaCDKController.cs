@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiAutosCDK.DTOs;
@@ -8,6 +10,7 @@ namespace WebApiAutosCDK.Controllers
 {
     [ApiController]
     [Route("api/marca")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy ="EsAdmin")]
     public class MarcaCDKController : ControllerBase
     {
         private readonly ApplicationDbContext context;
@@ -20,15 +23,16 @@ namespace WebApiAutosCDK.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<MarcaDTOs>>> Get()
+        
+        public async Task<ActionResult<List<MarcaDTOsConModelos>>> Get()
         {
             var marcasLista = await context.MarcasCDK.Include(x => x.Modelos).ToListAsync();
-            return mapper.Map<List<MarcaDTOs>>(marcasLista);
+            return mapper.Map<List<MarcaDTOsConModelos>>(marcasLista);
 
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<MarcaDTOs>> Get(int id)
+        [HttpGet("{id:int}", Name ="Obtener marca")]
+        public async Task<ActionResult<MarcaDTOsConModelos>> Get(int id)
         {
             var marca = await context.MarcasCDK.Include(x=>x.comentarios).Include(x=>x.Modelos).FirstOrDefaultAsync(x => x.Id == id);
 
@@ -37,7 +41,7 @@ namespace WebApiAutosCDK.Controllers
                 return NotFound();
             }
 
-            return mapper.Map<MarcaDTOs>(marca);
+            return mapper.Map<MarcaDTOsConModelos>(marca);
 
         }
 
@@ -69,23 +73,26 @@ namespace WebApiAutosCDK.Controllers
 
             context.Add(autor);
             await context.SaveChangesAsync();
-            return Ok();
+
+            var marca = mapper.Map<MarcaDTOs>(autor);
+
+
+            return CreatedAtRoute("Obtener marca", new { id = marca.Id }, marca);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(MarcaCDK marcaCDK, int id)
+        public async Task<ActionResult> Put(MarcaCreacionDTOs marcaCreacionDTOs, int id)
         {
-            if (marcaCDK.Id != id)
-            {
-                return BadRequest("El id de la marca NO coincide con el de la URL");
-            }
-
+           
             var existe = await context.MarcasCDK.AnyAsync(x => x.Id == id);
 
             if (!existe)
             {
                 return NotFound();
             }
+
+            var marcaCDK = mapper.Map<MarcaCDK>(marcaCreacionDTOs);
+            marcaCDK.Id = id;
 
             context.Update(marcaCDK);
             await context.SaveChangesAsync();

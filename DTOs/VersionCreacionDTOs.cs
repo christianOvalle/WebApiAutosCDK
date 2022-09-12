@@ -6,7 +6,7 @@ namespace WebApiAutosCDK.DTOs
 {
     public class VersionCreacionDTOs
     {
-        public int Id { get; set; }
+     
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [PrimeraLetraMayusculaAttribute]
         [StringLength(maximumLength: 200, ErrorMessage = "La {0} debe tener menos de {1} Caracteres")]

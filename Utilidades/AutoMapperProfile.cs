@@ -11,12 +11,16 @@ namespace WebApiAutosCDK.Utilidades
             CreateMap<MarcaCreacionDTOs, MarcaCDK>();
             CreateMap<ModeloCreacionDTOs, ModeloCDK>();
             CreateMap<MarcaCDK, MarcaDTOs>();
+            CreateMap<MarcaCDK, MarcaDTOsConModelos>();
             CreateMap<ModeloCDK, ModeloDTOs>();
             CreateMap<ComentariosCreacionDTOs, Comentario>();
             CreateMap<Comentario, ComentarioDTOs>();
-            CreateMap<VersionCDK, VersionDTOs>().ForMember(x => x.extraDTs, opciones => opciones.MapFrom(MapVersionDTOExtras));
+            CreateMap<VersionCDK, VersionDTOs>();
+            CreateMap<VersionCDK, VersionDTOsConExtras>().ForMember(x => x.extraDTs, opciones => opciones.MapFrom(MapVersionDTOExtras));
             CreateMap<VersionCreacionDTOs, VersionCDK>().ForMember(x => x.versionCDK_ExtraCDKs, opciones => opciones.MapFrom(MapVersionExtras));
-            CreateMap<ExtraCDK, ExtraDTOs>().ForMember(x => x.VersionDTOs, opciones => opciones.MapFrom(MapExtraDTOversion));
+            CreateMap<ExtraCDK, ExtraDTOs>();
+            CreateMap<ModeloPacthDTO, ModeloCDK>().ReverseMap();
+            CreateMap<ExtraCDK, ExtraDTOsConVersiones>().ForMember(x => x.VersionDTOs, opciones => opciones.MapFrom(MapExtraDTOversion));
             CreateMap<ExtraCreacionDTOs, ExtraCDK>();
         }
 

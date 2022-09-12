@@ -12,6 +12,6 @@
 
         public string combustible { get; set; }
 
-        public List<ExtraDTOs> extraDTs { get; set; }
+       
     }
 }

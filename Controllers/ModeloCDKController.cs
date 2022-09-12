@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiAutosCDK.DTOs;
@@ -22,14 +23,14 @@ namespace WebApiAutosCDK.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ModeloDTOs>>> Get()
         {
-            var modelos = await context.ModelosCDK.ToListAsync();
+            var modelos = await context.ModelosCDK.Include(x=>x.MarcaCDK).ToListAsync();
             return mapper.Map<List<ModeloDTOs>>(modelos);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "Obtener Modelo")]
         public async Task<ActionResult<ModeloDTOs>> Get(int id)
         {
-           var existe = await  context.ModelosCDK.FirstOrDefaultAsync(x => x.Id == id);
+           var existe = await  context.ModelosCDK.Include(x=>x.MarcaCDK).FirstOrDefaultAsync(x => x.Id == id);
 
             if(existe == null)
             {
@@ -74,32 +75,33 @@ namespace WebApiAutosCDK.Controllers
 
             context.Add(modelo);
             await context.SaveChangesAsync();
-            return Ok();
+
+            var modeloDTO = mapper.Map<ModeloDTOs>(modelo);
+
+            return CreatedAtRoute("Obtener Modelo", new { id = modeloDTO.Id }, modeloDTO);
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(ModeloCDK modeloCDK, int id)
+        public async Task<ActionResult> Put(ModeloCreacionDTOs modeloCreacionDTOs, int id)
         {
-            if(modeloCDK.Id != id)
-            {
-                return BadRequest("El id del modelo no coincide con el de la URL");
-            }
 
-            var valido = await context.ModelosCDK.AnyAsync(x=>x.Id == modeloCDK.Id);
+            var valido = await context.ModelosCDK.AnyAsync(x=>x.Id == id);
 
             if (!valido)
             {
                 return BadRequest("El modelo que desea editar no existe");
             }
 
-            var existeMarca = await context.MarcasCDK.AnyAsync(x => x.Id == modeloCDK.MarcaCDKId);
+            var existeMarca = await context.MarcasCDK.AnyAsync(x => x.Id == modeloCreacionDTOs.MarcaCDKId);
 
             if (!existeMarca)
             {
-                return BadRequest($"No existe una marca con id {modeloCDK.MarcaCDKId}");
+                return BadRequest($"No existe una marca con id {modeloCreacionDTOs.MarcaCDKId}");
             }
-       
 
+            var modeloCDK = mapper.Map<ModeloCDK>(modeloCreacionDTOs);
+            modeloCDK.Id = id;
+ 
             context.Update(modeloCDK);
             await context.SaveChangesAsync();
             return Ok();
@@ -133,6 +135,38 @@ namespace WebApiAutosCDK.Controllers
             context.Remove(new ModeloCDK() { modelo = modelo });
             await context.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpPatch("{id:int}")]
+        public async Task<ActionResult> Patch(int id, JsonPatchDocument<ModeloPacthDTO> document)
+        {
+            if(document == null)
+            {
+                return BadRequest();
+            }
+
+            var modeloDB = await context.ModelosCDK.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (modeloDB == null)
+            {
+                return NotFound();
+            }
+
+            var modeloDTO = mapper.Map<ModeloPacthDTO>(modeloDB);
+
+            document.ApplyTo(modeloDTO, ModelState);
+
+            var valido = TryValidateModel(modeloDB);
+
+            if (!valido)
+            {
+                return BadRequest();
+            }
+
+            mapper.Map(modeloDTO, modeloDB);
+
+            await context.SaveChangesAsync();
+            return NoContent();
         }
 
     }

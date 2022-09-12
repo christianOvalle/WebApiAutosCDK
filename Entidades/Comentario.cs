@@ -1,4 +1,6 @@
-﻿namespace WebApiAutosCDK.Entidades
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace WebApiAutosCDK.Entidades
 {
     public class Comentario
     {
@@ -8,6 +10,10 @@
 
         public int MarcaCDKId { get; set; } 
 
+        public string UsuarioId { get; set; }
+
         public MarcaCDK marcaCDK { get; set; }
+
+        public IdentityUser Usuario { get; set; }
     }
 }
