@@ -22,8 +22,14 @@ namespace WebApiAutosCDK.Utilidades
             CreateMap<ModeloPacthDTO, ModeloCDK>().ReverseMap();
             CreateMap<ExtraCDK, ExtraDTOsConVersiones>().ForMember(x => x.VersionDTOs, opciones => opciones.MapFrom(MapExtraDTOversion));
             CreateMap<ExtraCreacionDTOs, ExtraCDK>();
+            CreateMap<VendedorCDK, VendedorDTOs>();
+            CreateMap<VendedorCreacionDTOs, VendedorCDK>();
+            CreateMap<ClienteCDK, ClienteDTOs>();
+            CreateMap<ClienteCreacionDTOs, ClienteCDK>();
+            CreateMap<UbicacionDireccionCDK, UbicacionDTOs>();
+            CreateMap<UbicacionCreacionDTOs, UbicacionDireccionCDK>().ReverseMap();
+            CreateMap<DireccionClienteCDK, DireccionDTOs>();
         }
-
         private List<VersionDTOs> MapExtraDTOversion(ExtraCDK extraCDK, ExtraDTOs extraDTOs )
         {
             var resultado = new List<VersionDTOs>();

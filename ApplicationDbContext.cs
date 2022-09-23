@@ -24,5 +24,10 @@ namespace WebApiAutosCDK
         public DbSet<ExtraCDK> ExtraCDK { get; set; }
         public DbSet<VersionCDK> VersionCDK { get; set; }
         public DbSet<VersionCDK_ExtraCDK> versionCDK_ExtraCDK { get ; set; }
+        public DbSet<VendedorCDK> VendedorCDK { get; set; }
+        public DbSet<ClienteCDK> ClientesCDK { get; set; }
+        public DbSet<UbicacionDireccionCDK> UbicacionesDireccionCDK { get; set; }
+        public DbSet<DireccionClienteCDK> DireccionClientesCDK { get; set; }
+        public DbSet<AutosUsadosCDK> AutosUsadosCDK { get; set; }
     }
 }

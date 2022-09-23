@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiAutosCDK;
 
@@ -11,9 +12,10 @@ using WebApiAutosCDK;
 namespace WebApiAutosCDK.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220914153316_Vendedor")]
+    partial class Vendedor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,34 +222,6 @@ namespace WebApiAutosCDK.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WebApiAutosCDK.Entidades.ClienteCDK", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("apellido")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("cedula")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("correo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("fechaRegistro")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("nombre")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ClientesCDK", (string)null);
-                });
-
             modelBuilder.Entity("WebApiAutosCDK.Entidades.Comentario", b =>
                 {
                     b.Property<int>("Id")
@@ -271,48 +245,7 @@ namespace WebApiAutosCDK.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("Comentarios", (string)null);
-                });
-
-            modelBuilder.Entity("WebApiAutosCDK.Entidades.DireccionClienteCDK", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ClienteCDKId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UbicacionDireccionCDKId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("calle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ciudad")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("codigo_postal")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("municipio")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("numero_casa")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("sector")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClienteCDKId");
-
-                    b.HasIndex("UbicacionDireccionCDKId");
-
-                    b.ToTable("DireccionClientesCDK", (string)null);
+                    b.ToTable("Comentarios");
                 });
 
             modelBuilder.Entity("WebApiAutosCDK.Entidades.ExtraCDK", b =>
@@ -334,7 +267,7 @@ namespace WebApiAutosCDK.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ExtraCDK", (string)null);
+                    b.ToTable("ExtraCDK");
                 });
 
             modelBuilder.Entity("WebApiAutosCDK.Entidades.MarcaCDK", b =>
@@ -352,7 +285,7 @@ namespace WebApiAutosCDK.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MarcasCDK", (string)null);
+                    b.ToTable("MarcasCDK");
                 });
 
             modelBuilder.Entity("WebApiAutosCDK.Entidades.ModeloCDK", b =>
@@ -378,28 +311,7 @@ namespace WebApiAutosCDK.Migrations
 
                     b.HasIndex("MarcaCDKId");
 
-                    b.ToTable("ModelosCDK", (string)null);
-                });
-
-            modelBuilder.Entity("WebApiAutosCDK.Entidades.UbicacionDireccionCDK", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ClienteCDKId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("lugar")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClienteCDKId");
-
-                    b.ToTable("UbicacionesDireccionCDK", (string)null);
+                    b.ToTable("ModelosCDK");
                 });
 
             modelBuilder.Entity("WebApiAutosCDK.Entidades.VendedorCDK", b =>
@@ -432,7 +344,7 @@ namespace WebApiAutosCDK.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VendedorCDK", (string)null);
+                    b.ToTable("VendedorCDK");
                 });
 
             modelBuilder.Entity("WebApiAutosCDK.Entidades.VersionCDK", b =>
@@ -465,7 +377,7 @@ namespace WebApiAutosCDK.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VersionCDK", (string)null);
+                    b.ToTable("VersionCDK");
                 });
 
             modelBuilder.Entity("WebApiAutosCDK.Entidades.VersionCDK_ExtraCDK", b =>
@@ -480,7 +392,7 @@ namespace WebApiAutosCDK.Migrations
 
                     b.HasIndex("ExtraCDKId");
 
-                    b.ToTable("versionCDK_ExtraCDK", (string)null);
+                    b.ToTable("versionCDK_ExtraCDK");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -551,23 +463,6 @@ namespace WebApiAutosCDK.Migrations
                     b.Navigation("marcaCDK");
                 });
 
-            modelBuilder.Entity("WebApiAutosCDK.Entidades.DireccionClienteCDK", b =>
-                {
-                    b.HasOne("WebApiAutosCDK.Entidades.ClienteCDK", "clienteCDK")
-                        .WithMany("direccionClienteCDKs")
-                        .HasForeignKey("ClienteCDKId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApiAutosCDK.Entidades.UbicacionDireccionCDK", "direccionCDK")
-                        .WithMany()
-                        .HasForeignKey("UbicacionDireccionCDKId");
-
-                    b.Navigation("clienteCDK");
-
-                    b.Navigation("direccionCDK");
-                });
-
             modelBuilder.Entity("WebApiAutosCDK.Entidades.ModeloCDK", b =>
                 {
                     b.HasOne("WebApiAutosCDK.Entidades.MarcaCDK", "MarcaCDK")
@@ -577,17 +472,6 @@ namespace WebApiAutosCDK.Migrations
                         .IsRequired();
 
                     b.Navigation("MarcaCDK");
-                });
-
-            modelBuilder.Entity("WebApiAutosCDK.Entidades.UbicacionDireccionCDK", b =>
-                {
-                    b.HasOne("WebApiAutosCDK.Entidades.ClienteCDK", "clienteCDK")
-                        .WithMany("ubicacionDireccionCDKs")
-                        .HasForeignKey("ClienteCDKId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("clienteCDK");
                 });
 
             modelBuilder.Entity("WebApiAutosCDK.Entidades.VersionCDK_ExtraCDK", b =>
@@ -607,13 +491,6 @@ namespace WebApiAutosCDK.Migrations
                     b.Navigation("Extra");
 
                     b.Navigation("version");
-                });
-
-            modelBuilder.Entity("WebApiAutosCDK.Entidades.ClienteCDK", b =>
-                {
-                    b.Navigation("direccionClienteCDKs");
-
-                    b.Navigation("ubicacionDireccionCDKs");
                 });
 
             modelBuilder.Entity("WebApiAutosCDK.Entidades.ExtraCDK", b =>

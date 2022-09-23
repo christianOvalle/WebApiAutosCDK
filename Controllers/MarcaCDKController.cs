@@ -23,7 +23,6 @@ namespace WebApiAutosCDK.Controllers
         }
 
         [HttpGet]
-        
         public async Task<ActionResult<List<MarcaDTOsConModelos>>> Get()
         {
             var marcasLista = await context.MarcasCDK.Include(x => x.Modelos).ToListAsync();
@@ -69,12 +68,12 @@ namespace WebApiAutosCDK.Controllers
                 return BadRequest($"La marca {marcaCreacionDTOs.marca} ya existe en el registro");
             }
 
-            var autor = mapper.Map<MarcaCDK>(marcaCreacionDTOs);
+            var marcaIngresar = mapper.Map<MarcaCDK>(marcaCreacionDTOs);
 
-            context.Add(autor);
+            context.Add(marcaIngresar);
             await context.SaveChangesAsync();
 
-            var marca = mapper.Map<MarcaDTOs>(autor);
+            var marca = mapper.Map<MarcaDTOs>(marcaIngresar);
 
 
             return CreatedAtRoute("Obtener marca", new { id = marca.Id }, marca);
