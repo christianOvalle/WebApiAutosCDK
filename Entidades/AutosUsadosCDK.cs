@@ -7,11 +7,11 @@ namespace WebApiAutosCDK.Entidades
     {
        
         public int Id { get; set; }
-        [Required]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string marca { get; set; }
-        [Required]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string modelo { get; set; }
-        [Required]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string matricula { get; set; }
         public string condicion{ get; set; }
         [Required]

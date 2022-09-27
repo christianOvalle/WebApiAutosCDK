@@ -68,7 +68,7 @@ namespace WebApiAutosCDK.Controllers
             return NoContent();
         }
 
-        [HttpDelete("id:int")]
+        [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
 

@@ -2,8 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiAutosCDK.DTOs;
+using WebApiAutosCDK.Entidades;
 
-namespace WebApiAutosCDK.Entidades
+namespace WebApiAutosCDK.Controllers
 {
     [ApiController]
     [Route("api/cliente")]
@@ -26,16 +27,16 @@ namespace WebApiAutosCDK.Entidades
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<ClienteDTOs>>Get(int id)
+        public async Task<ActionResult<ClienteDTOs>> Get(int id)
         {
-            var cliente = context.ClientesCDK.FirstOrDefaultAsync(x => x.Id == id);
+            var cliente = await context.ClientesCDK.FirstOrDefaultAsync(x => x.Id == id);
 
-            if(cliente is null)
+            if (cliente is null)
             {
                 return NotFound();
             }
 
-            return  mapper.Map<ClienteDTOs>(cliente);
+            return mapper.Map<ClienteDTOs>(cliente);
         }
 
         [HttpPost]
