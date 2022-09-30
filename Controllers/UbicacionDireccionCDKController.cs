@@ -19,14 +19,14 @@ namespace WebApiAutosCDK.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name ="obtenerUbicacon")]
         public async Task<ActionResult<UbicacionDTOs>>Get(int id)
         {
             var ubicacion = await context.UbicacionesDireccionCDK.FirstOrDefaultAsync(x => x.Id == id);
             return mapper.Map<UbicacionDTOs>(ubicacion);
         }
 
-        [HttpPost]
+        [HttpPost(Name ="crearUbicacion")]
         public async Task<ActionResult> Post(UbicacionCreacionDTOs ubicacionCreacionDTOs)
         {
             var ubicacion = await context.ClientesCDK.AnyAsync(x=>x.Id == ubicacionCreacionDTOs.ClienteCDKId);
@@ -43,7 +43,7 @@ namespace WebApiAutosCDK.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id:int}", Name ="actualizarUbicacion")]
         public async Task<ActionResult> Put(int id, UbicacionCreacionDTOs ubicacionCreacionDTOs)
         {
             var ubicacion = await context.UbicacionesDireccionCDK.AnyAsync(x => x.Id == id);
@@ -68,7 +68,7 @@ namespace WebApiAutosCDK.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}", Name ="borrarUbicacion")]
         public async Task<ActionResult> Delete(int id)
         {
 

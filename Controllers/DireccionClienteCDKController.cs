@@ -19,14 +19,14 @@ namespace WebApiAutosCDK.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet(Name ="obtenerDirecciones")]
         public async Task<ActionResult<List<DireccionDTOs>>> Get()
         {
             var direccionLista = await context.DireccionClientesCDK.ToListAsync();
             return mapper.Map<List<DireccionDTOs>>(direccionLista);
         }
 
-        [HttpGet("{id:int}", Name = "Obtener Direccion Editada")]
+        [HttpGet("{id:int}", Name = "obtenerDireccion")]
         public async Task<ActionResult<DireccionDTOs>>Get(int id)
         {
             var direccionPorId = await context.DireccionClientesCDK.FirstOrDefaultAsync(x => x.Id == id);
@@ -39,7 +39,7 @@ namespace WebApiAutosCDK.Controllers
             return mapper.Map<DireccionDTOs>(direccionPorId);
         }
 
-        [HttpPost]
+        [HttpPost(Name ="crearDireccion")]
         public async Task<ActionResult> Post(DireccionCreacionDTOs direccionCreacionDTOs)
         {
             var existeUbicacion = await context.UbicacionesDireccionCDK.AnyAsync(x => x.Id == direccionCreacionDTOs.UbicacionDireccionCDKId);
@@ -63,7 +63,7 @@ namespace WebApiAutosCDK.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id:int}", Name ="actualizarDireccion")]
         public async Task<ActionResult> Put(int id, DireccionCreacionDTOs direccionCreacionDTOs)
         {
             var existeDireccion = await context.DireccionClientesCDK.AnyAsync(x => x.Id == id);
@@ -95,10 +95,10 @@ namespace WebApiAutosCDK.Controllers
 
             var direccion = mapper.Map<DireccionDTOs>(direccionMapeada);
 
-            return CreatedAtAction("Obtener Direccion Editada", new { id = direccion.Id }, direccion);
+            return CreatedAtAction("obtenerDireccion", new { id = direccion.Id }, direccion);
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}", Name ="borrarDireccion")]
         public async Task<ActionResult> Delete(int id)
         {
             var existeDireccion = await context.DireccionClientesCDK.AnyAsync(x => x.Id == id);

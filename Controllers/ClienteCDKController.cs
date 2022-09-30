@@ -19,14 +19,14 @@ namespace WebApiAutosCDK.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet(Name ="obtenerClientes")]
         public async Task<ActionResult<List<ClienteDTOs>>> Get()
         {
             var clientes = await context.ClientesCDK.Include(x => x.direccionClienteCDKs).Include(x => x.ubicacionDireccionCDKs).ToListAsync();
             return mapper.Map<List<ClienteDTOs>>(clientes);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name ="obtenerCliente")]
         public async Task<ActionResult<ClienteDTOs>> Get(int id)
         {
             var cliente = await context.ClientesCDK.FirstOrDefaultAsync(x => x.Id == id);
@@ -39,7 +39,7 @@ namespace WebApiAutosCDK.Controllers
             return mapper.Map<ClienteDTOs>(cliente);
         }
 
-        [HttpPost]
+        [HttpPost(Name ="crearCliente")]
         public async Task<ActionResult> Post(ClienteCreacionDTOs clienteCreacionDTOs)
         {
             var ExisteVendedor = await context.VendedorCDK.AnyAsync(x => x.nombre == clienteCreacionDTOs.nombre & x.apellido == clienteCreacionDTOs.apellido);
@@ -62,7 +62,7 @@ namespace WebApiAutosCDK.Controllers
             return Ok();
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id:int}",Name ="actualizarCliente")]
         public async Task<ActionResult> Put(int id, ClienteCreacionDTOs clienteCreacionDTOs)
         {
             var ExisteCliente = await context.ClientesCDK.AnyAsync(x => x.Id == id);
@@ -80,7 +80,7 @@ namespace WebApiAutosCDK.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}", Name ="borrarCliente")]
         public async Task<ActionResult> Delete(int id)
         {
             var ExisteCliente = await context.ClientesCDK.AnyAsync(x => x.Id == id);

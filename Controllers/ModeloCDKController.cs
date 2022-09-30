@@ -20,14 +20,14 @@ namespace WebApiAutosCDK.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet(Name ="obtenerModelos")]
         public async Task<ActionResult<List<ModeloDTOs>>> Get()
         {
             var modelos = await context.ModelosCDK.Include(x=>x.MarcaCDK).ToListAsync();
             return mapper.Map<List<ModeloDTOs>>(modelos);
         }
 
-        [HttpGet("{id:int}", Name = "Obtener Modelo")]
+        [HttpGet("{id:int}", Name = "obtenerModelo")]
         public async Task<ActionResult<ModeloDTOs>> Get(int id)
         {
            var existe = await  context.ModelosCDK.Include(x=>x.MarcaCDK).FirstOrDefaultAsync(x => x.Id == id);
@@ -40,7 +40,7 @@ namespace WebApiAutosCDK.Controllers
             return mapper.Map<ModeloDTOs>(existe);
         }
 
-        [HttpGet("{nombre}")]
+        [HttpGet("{nombre}",Name = "obtenerModelosPorNombre")]
         public async Task<ActionResult<List<ModeloDTOs>>> Get(string nombre)
         {
             var existe = await context.ModelosCDK.Where(x => x.modelo.Contains(nombre)).ToListAsync();
@@ -54,7 +54,7 @@ namespace WebApiAutosCDK.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost(Name ="crearModelo")]
         public async Task<ActionResult> Post(ModeloCreacionDTOs modeloCreacionDTOs)
         {
             var validacion = await context.MarcasCDK.AnyAsync(x => x.Id == modeloCreacionDTOs.MarcaCDKId);
@@ -78,10 +78,10 @@ namespace WebApiAutosCDK.Controllers
 
             var modeloDTO = mapper.Map<ModeloDTOs>(modelo);
 
-            return CreatedAtRoute("Obtener Modelo", new { id = modeloDTO.Id }, modeloDTO);
+            return CreatedAtRoute("obtenerModelo", new { id = modeloDTO.Id }, modeloDTO);
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id:int}", Name ="actualizarModelo")]
         public async Task<ActionResult> Put(ModeloCreacionDTOs modeloCreacionDTOs, int id)
         {
 
@@ -107,7 +107,7 @@ namespace WebApiAutosCDK.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}", Name ="borrarModelo")]
         public async Task<ActionResult> Delete(int id)
         {
             var valido = await context.ModelosCDK.AnyAsync(x => x.Id == id);
@@ -122,7 +122,7 @@ namespace WebApiAutosCDK.Controllers
             return Ok();
         }
 
-        [HttpDelete("{modelo}")]
+        [HttpDelete("{modelo}", Name ="borrarModeloPorNombre")]
         public async Task<ActionResult> Delete(string modelo)
         {
             var valido = await context.ModelosCDK.AnyAsync(x => x.modelo == modelo);

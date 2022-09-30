@@ -6,6 +6,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
+using WebApiAutosCDK.Servicios;
+using WebApiAutosCDK.Utilidades;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace WebApiAutosCDK
 {
@@ -82,6 +85,10 @@ namespace WebApiAutosCDK
                     builder.WithOrigins("https://www.apirequest.io").AllowAnyMethod().AllowAnyHeader();
                 });
             });
+
+            services.AddTransient<GeneradorEnlaces>();
+            services.AddTransient<HATEOASMarcaFilterAttribute>();
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

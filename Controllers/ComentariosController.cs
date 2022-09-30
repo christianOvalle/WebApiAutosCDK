@@ -24,7 +24,7 @@ namespace WebApiAutosCDK.Controllers
             this.userManager = userManager;
         }
 
-        [HttpGet]
+        [HttpGet(Name ="obtenerComentarios")]
         public async Task<ActionResult<List<ComentarioDTOs>>> Get(int MarcaId)
         {
             var existeMarca = await context.MarcasCDK.AnyAsync(x => x.Id == MarcaId);
@@ -39,7 +39,7 @@ namespace WebApiAutosCDK.Controllers
             return mapper.Map<List<ComentarioDTOs>>(comentarios);
         }
 
-        [HttpGet("{id:int}", Name ="ObtenerComentario")]
+        [HttpGet("{id:int}", Name ="obtenerComentario")]
         public async Task<ActionResult<ComentarioDTOs>> GetPorId(int id)
         {
             var existeComentario = await context.Comentarios.FirstOrDefaultAsync(x => x.Id == id);
@@ -52,7 +52,7 @@ namespace WebApiAutosCDK.Controllers
             return mapper.Map<ComentarioDTOs>(existeComentario);
         }
 
-        [HttpPost]
+        [HttpPost(Name ="crearComentario")]
         [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult> Post(int MarcaId, ComentariosCreacionDTOs comentariosCreacionDTOs)
         {
@@ -76,11 +76,11 @@ namespace WebApiAutosCDK.Controllers
 
             var ComentarioDTO = mapper.Map<ComentarioDTOs>(comentario);
 
-            return CreatedAtRoute("ObtenerComentario", new { id = comentario.Id, marcaId = MarcaId }, ComentarioDTO);
+            return CreatedAtRoute("obtenerComentario", new { id = comentario.Id, marcaId = MarcaId }, ComentarioDTO);
 
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id:int}", Name ="actualizarComentario")]
         public async Task<ActionResult> Put(int MarcaId, int id, ComentariosCreacionDTOs comentarioDTOs)
         {
             var existeMarca = await context.MarcasCDK.AnyAsync(x => x.Id == MarcaId);

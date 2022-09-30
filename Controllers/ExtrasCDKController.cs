@@ -19,14 +19,14 @@ namespace WebApiAutosCDK.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet(Name ="obtenerExtras")]
         public async Task<ActionResult<List<ExtraDTOs>>> Get()
         {
             var extras = await context.ExtraCDK.ToListAsync();
             return mapper.Map<List<ExtraDTOs>>(extras);
         }
 
-        [HttpGet("{id:int}", Name ="Obtener Extra")]
+        [HttpGet("{id:int}", Name ="obtenerExtra")]
         public async Task<ActionResult<ExtraDTOsConVersiones>> Get(int id)
         {
             var existe = await context.ExtraCDK.Include(x=>x.versionCDK_ExtraCDK).ThenInclude(x=>x.version).FirstOrDefaultAsync(x => x.Id == id);
@@ -41,7 +41,7 @@ namespace WebApiAutosCDK.Controllers
            
         }
 
-        [HttpGet("{nombre}")]
+        [HttpGet("{nombre}", Name ="obtenerExtraPorNombre")]
         public async Task<ActionResult<List<ExtraDTOs>>> Get(string nombre)
         {
             var existe = await context.ExtraCDK.Where(x=>x.nombre.Contains(nombre)).ToListAsync();
@@ -56,7 +56,7 @@ namespace WebApiAutosCDK.Controllers
             return extra;
         }
 
-        [HttpPost]
+        [HttpPost(Name ="crearExtra")]
         public async Task<ActionResult> Post(ExtraCreacionDTOs extraCDK)
         {
             var existe = await context.ExtraCDK.AnyAsync(x => x.nombre == extraCDK.nombre);
@@ -73,10 +73,10 @@ namespace WebApiAutosCDK.Controllers
 
             var extradto = mapper.Map<ExtraDTOs>(extra);
 
-            return CreatedAtRoute("Obtener Extra", new { id = extradto.Id }, extradto);
+            return CreatedAtRoute("obtenerExtra", new { id = extradto.Id }, extradto);
         }
         
-        [HttpPut("{id:int}")]
+        [HttpPut("{id:int}", Name ="actualizarExtra")]
         public async Task<ActionResult> Put(ExtraCreacionDTOs extraCreacionDTO, int id)
         {
          
@@ -95,7 +95,7 @@ namespace WebApiAutosCDK.Controllers
             return NoContent();
         }
         
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}", Name ="borrarExtra")]
         public async Task<ActionResult> Delete(int id)
         {
             var existe = await context.ExtraCDK.AnyAsync(x => x.Id == id);

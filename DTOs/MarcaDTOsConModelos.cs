@@ -1,7 +1,7 @@
 ﻿namespace WebApiAutosCDK.DTOs
 {
-    public class MarcaDTOsConModelos : MarcaDTOs
+    public class MarcaDTOsConModelos
     {
-        public List<ModeloDTOs> Modelos { get; set; }
+       
     }
 }

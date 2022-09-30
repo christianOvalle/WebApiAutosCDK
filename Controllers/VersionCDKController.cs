@@ -19,14 +19,14 @@ namespace WebApiAutosCDK.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet(Name ="obtenerVersiones")]
         public async Task<ActionResult<List<VersionDTOs>>> Get()
         {
             var versiones=  await context.VersionCDK.ToListAsync();
             return mapper.Map <List<VersionDTOs>>(versiones);
         }
 
-        [HttpGet("{id:int}", Name = "Obtener version")]
+        [HttpGet("{id:int}", Name = "obtenerVersion")]
         public async Task<ActionResult<VersionDTOsConExtras>> Get(int id)
         {
             var existe = await context.VersionCDK.Include(x=>x.versionCDK_ExtraCDKs).ThenInclude(x=>x.Extra).FirstOrDefaultAsync(x => x.Id == id);
@@ -39,7 +39,7 @@ namespace WebApiAutosCDK.Controllers
             return mapper.Map<VersionDTOsConExtras>(existe);
         }
 
-        [HttpGet("{nombre}")]
+        [HttpGet("{nombre}", Name ="obtenerVersionPorNombre")]
         public async Task<ActionResult<List<VersionDTOs>>> Get(string nombre)
         {
             var existe = await context.VersionCDK.Where(x => x.versionNombre.Contains(nombre)).ToListAsync();
@@ -52,7 +52,7 @@ namespace WebApiAutosCDK.Controllers
             return mapper.Map<List<VersionDTOs>>(existe);
         }
 
-        [HttpPost]
+        [HttpPost(Name ="crearVersion")]
         public async Task<ActionResult> Post(VersionCreacionDTOs versionCDK)
         {
             var existeModelo = await context.ModelosCDK.AnyAsync(x => x.Id == versionCDK.ModeloCDKId);
@@ -77,10 +77,10 @@ namespace WebApiAutosCDK.Controllers
             await context.SaveChangesAsync();
 
             var versionDTO = mapper.Map<VersionDTOs>(version);
-            return CreatedAtRoute("Obtener version", new { id = version.Id}, versionDTO);
+            return CreatedAtRoute("obtenerVersion", new { id = version.Id}, versionDTO);
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id:int}", Name ="actualizarVersion")]
         public async Task<ActionResult> Put(VersionCreacionDTOs versionCreacionDTOs, int id)
         {
 
@@ -97,7 +97,7 @@ namespace WebApiAutosCDK.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:int}", Name ="borrarVersion")]
         public async Task<ActionResult> Delete(int id)
         {
             var existe = await context.VersionCDK.AnyAsync(x => x.Id == id);

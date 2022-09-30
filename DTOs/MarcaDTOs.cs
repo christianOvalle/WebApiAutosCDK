@@ -2,7 +2,7 @@
 
 namespace WebApiAutosCDK.DTOs
 {
-    public class MarcaDTOs
+    public class MarcaDTOs : Recurso
     {
         public int Id { get; set; }
 
@@ -10,7 +10,9 @@ namespace WebApiAutosCDK.DTOs
 
         public List<ComentarioDTOs> comentarios { get; set; }
 
-        public List<ModeloCDK> Modelos { get; set; }
+        public List<ModeloDTOs> Modelos { get; set; }
+
+
 
     }
 }
