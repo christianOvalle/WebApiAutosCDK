@@ -23,7 +23,7 @@ namespace WebApiAutosCDK.Utilidades
 
             var valor = cabecera[0];
 
-            if (valor.Equals("Y", StringComparison.InvariantCultureIgnoreCase))
+            if (!valor.Equals("Y", StringComparison.InvariantCultureIgnoreCase))
             {
                 return false;
             }

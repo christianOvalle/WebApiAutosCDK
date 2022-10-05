@@ -37,12 +37,12 @@ namespace WebApiAutosCDK.Servicios
             var esAdmin = await EsAdmin();
             var url = ContruirUrlHelper();
 
-            marcaDTOs.Enlaces.Add(new DatoHATEOAS(enlace: Url.Link("obtenerMarca", new { id = marcaDTOs.Id }), descripcion: "self", metodo: "GET"));
+            marcaDTOs.Enlaces.Add(new DatoHATEOAS(enlace: url.Link("obtenerMarca", new { id = marcaDTOs.Id }), descripcion: "self", metodo: "GET"));
 
             if (esAdmin)
             {
-                marcaDTOs.Enlaces.Add(new DatoHATEOAS(enlace: Url.Link("actualizarMarca", new { id = marcaDTOs.Id }), descripcion: "marca-actualizar", metodo: "PUT"));
-                marcaDTOs.Enlaces.Add(new DatoHATEOAS(enlace: Url.Link("borrarMarca", new { id = marcaDTOs.Id }), descripcion: "marca-borrar", metodo: "DELETE"));
+                marcaDTOs.Enlaces.Add(new DatoHATEOAS(enlace: url.Link("actualizarMarca", new { id = marcaDTOs.Id }), descripcion: "marca-actualizar", metodo: "PUT"));
+                marcaDTOs.Enlaces.Add(new DatoHATEOAS(enlace: url.Link("borrarMarca", new { id = marcaDTOs.Id }), descripcion: "marca-borrar", metodo: "DELETE"));
             }
         }
     }

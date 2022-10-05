@@ -27,24 +27,13 @@ namespace WebApiAutosCDK.Controllers
 
         [HttpGet(Name ="obtenerMarcas")]
         [AllowAnonymous]
-        public async Task<ActionResult<ColeccionDeRecursos<MarcaDTOs>>> Get([FromQuery] bool incluirHATEOAS)
+        [ServiceFilter(typeof(HATEOASMarcaFilterAttribute))]
+        public async Task<ActionResult<List<MarcaDTOs>>> Get([FromHeader] string incluirHATEOAS)
         {
             var marcasLista = await context.MarcasCDK.Include(x=>x.comentarios).Include(x=>x.Modelos).ToListAsync();
-            var dtos = mapper.Map<List<MarcaDTOs>>(marcasLista);
-            var esAdmin = await authorizationService.AuthorizeAsync(User, "esAdmin");
-            if (incluirHATEOAS) {
-              
-                    //dtos.ForEach(dto => GenerarEnlaces(dto, esAdmin.Succeeded));
-
-                var resultado = new ColeccionDeRecursos<MarcaDTOs> { valores = dtos };
-                resultado.Enlaces.Add(new DatoHATEOAS(enlace: Url.Link("obtenerMarcas", new { }), descripcion: "self", metodo: "GET"));
-                if (esAdmin.Succeeded)
-                {
-                    resultado.Enlaces.Add(new DatoHATEOAS(enlace: Url.Link("crearMarcas", new { }), descripcion: "crear-marca", metodo: "POST"));
-                }
-                return Ok(resultado);
-            }
-            return Ok(dtos);
+            return mapper.Map<List<MarcaDTOs>>(marcasLista);
+         
+            
         }
 
         [HttpGet("{id:int}", Name ="obtenerMarca")]
@@ -59,14 +48,14 @@ namespace WebApiAutosCDK.Controllers
                 return NotFound();
             }
 
-            var dto = mapper.Map<MarcaDTOs>(marca);
-            return Ok(dto);
+            var dto = mapper.Map<MarcaDTOsConModelos>(marca);
+            return dto;
         }
 
         
 
         [HttpGet("{nombre}", Name ="obtenerMarcaPorNombre")]
-        public async Task<ActionResult<List<MarcaDTOs>>> Get(string nombre)
+        public async Task<ActionResult<List<MarcaDTOs>>> GetByName(string nombre)
         {
             var existe = await context.MarcasCDK.Where(x => x.marca.Contains(nombre)).ToListAsync();
 

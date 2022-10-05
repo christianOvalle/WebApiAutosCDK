@@ -26,8 +26,21 @@ namespace WebApiAutosCDK.Utilidades
             }
 
             var resultado = context.Result as ObjectResult;
-            var modelo = resultado.Value as MarcaDTOs ?? throw new ArgumentNullException("Se  esperaba una instancia de MarcaDTOs");
-            await generadorEnlaces.GenerarEnlaces(modelo);s
+            var maraDTOs = resultado.Value as MarcaDTOs;
+            if (maraDTOs == null)
+            {
+
+                var marcaDTO = resultado.Value as List<MarcaDTOs> ?? throw new ArgumentException("Se esperaba una instancia de marcaDTOs o List<marcaDTOs>");
+
+                marcaDTO.ForEach(async x => await generadorEnlaces.GenerarEnlaces(x));
+                resultado.Value = marcaDTO;
+
+            }
+            else
+            {
+                await generadorEnlaces.GenerarEnlaces(maraDTOs);
+            }
+            
             await next();
         }
 
